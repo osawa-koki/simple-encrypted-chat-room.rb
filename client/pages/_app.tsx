@@ -21,6 +21,11 @@ import { Alert, CloseButton } from 'react-bootstrap';
 type DialogStruct = ['primary' | 'info' | 'warning' | 'danger', string] | null;
 export type { DialogStruct };
 
+export type AppStruct = {
+  // eslint-disable-next-line no-unused-vars
+  SetDialog: (dialog: DialogStruct) => Promise<void>
+};
+
 function PickItem(array: any[], index: number) {
   if (array === null) return null;
   if (array.length <= index) return null;

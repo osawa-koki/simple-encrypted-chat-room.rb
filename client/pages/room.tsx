@@ -4,8 +4,9 @@ import { Button, Alert, Form, Table } from 'react-bootstrap';
 import Layout from "../components/Layout";
 
 import { DataContext } from "../src/DataContext";
+import { AppStruct } from "./_app";
 
-export default function RoomPage({SetDialog}) {
+export default function RoomPage({ SetDialog }: AppStruct) {
 
   const { sharedData, setSharedData } = useContext(DataContext);
 
