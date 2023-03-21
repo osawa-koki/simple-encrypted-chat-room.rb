@@ -49,6 +49,39 @@ class Api::RoomsController < ApplicationController
 
   def update
     # PATCH /rooms/:id
+    @room = Room.find(params[:id])
+
+    room_data = JSON.parse(request.body.read)
+    room_name = room_data["room_name"]
+    room_description = room_data["description"]
+    room_password = room_data["password"]
+
+    unless @room.room_name == room_name
+      unless Room.where(room_name: room_name).empty?
+        render json: { errors: ["Room name already exists."] }, status: :unprocessable_entity
+        return
+      end
+    end
+
+    attributes = {}
+    attributes[:room_name] = room_name if room_name.present?
+    attributes[:description] = room_description if room_description.present?
+    attributes[:password] = room_password if room_password.present?
+
+    @room.assign_attributes(attributes)
+
+    unless @room.valid?
+      render json: { errors: @room.errors.full_messages }, status: :unprocessable_entity
+      return
+    end
+
+    @room.password = Digest::SHA256.hexdigest("#{Rails.application.config.hash_digest_salt_prefix}#{room_password}#{Rails.application.config.hash_digest_salt_suffix}") if @room.password.present?
+
+    if @room.save
+      render json: @room, status: :ok
+    else
+      render json: { errors: @room.errors.full_messages }, status: :server_error
+    end
   end
 
   def destroy
