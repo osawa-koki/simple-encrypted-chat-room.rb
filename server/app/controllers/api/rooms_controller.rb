@@ -1,6 +1,6 @@
-class Api::RoomController < ApplicationController
+class Api::RoomsController < ApplicationController
   def index
-    # GET /rooms
+    # GET /api/rooms
   end
 
   def show
