@@ -185,7 +185,11 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
             <Form.Control type="text" placeholder="Enter room name" value={join_room_name} onInput={(e) => {setJoinRoomName(e.currentTarget.value)}} />
           </Form.Group>
           {
-            HasErrorJoining() !== null ? (
+            sharedData.rooms.find(a => a.room_name === join_room_name) !== undefined ? (
+              <Alert variant="danger" className="mt-3">
+                You are already in this room.
+              </Alert>
+            ) : HasErrorJoining() !== null ? (
               <Alert variant="danger" className="mt-3">
                 {HasErrorJoining()}
               </Alert>
@@ -219,7 +223,7 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
             SetDialog(['info', 'Room joined successfully.']);
             setSaver(saver + 1);
             setLoading(false);
-          }} disabled={loading || HasErrorJoining() !== null}>Join Room</Button>
+          }} disabled={loading || HasErrorJoining() !== null || sharedData.rooms.find(a => a.room_name === join_room_name) !== undefined}>Join Room</Button>
         </Form>
       </div>
       {
