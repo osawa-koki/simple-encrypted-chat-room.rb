@@ -221,6 +221,7 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
               ],
             });
             SetDialog(['info', 'Room joined successfully.']);
+            setJoinRoomName('');
             setSaver(saver + 1);
             setLoading(false);
           }} disabled={loading || HasErrorJoining() !== null || sharedData.rooms.find(a => a.room_name === join_room_name) !== undefined}>Join Room</Button>
