@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { useState } from 'react';
 
@@ -23,7 +23,8 @@ export type { DialogStruct };
 
 export type AppStruct = {
   // eslint-disable-next-line no-unused-vars
-  SetDialog: (dialog: DialogStruct) => Promise<void>
+  SetDialog: (dialog: DialogStruct) => Promise<void>;
+  SaveInLocalStorage: () => void;
 };
 
 function PickItem(array: any[], index: number) {
@@ -50,6 +51,27 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     setDialog(null);
   };
 
+  const SaveInLocalStorage = () => {
+    localStorage.setItem('username', sharedData.username);
+    localStorage.setItem('current_room', JSON.stringify(sharedData.current_room));
+    localStorage.setItem('rooms', JSON.stringify(sharedData.rooms));
+    localStorage.setItem('key', sharedData.key);
+    localStorage.setItem('message', sharedData.message);
+  };
+
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    const current_room = localStorage.getItem('current_room');
+    const rooms = localStorage.getItem('rooms');
+    const key = localStorage.getItem('key');
+    const message = localStorage.getItem('message');
+    if (username) setSharedData((prev) => ({ ...prev, username }));
+    if (current_room) setSharedData((prev) => ({ ...prev, current_room: JSON.parse(current_room) }));
+    if (rooms) setSharedData((prev) => ({ ...prev, rooms: JSON.parse(rooms) }));
+    if (key) setSharedData((prev) => ({ ...prev, key }));
+    if (message) setSharedData((prev) => ({ ...prev, message }));
+  }, []);
+
   return (
     <>
       <Head>
@@ -59,7 +81,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link rel="icon" type="image/png" href={`${setting.basePath}/favicon.ico`} />
       </Head>
       <DataContext.Provider value={{sharedData, setSharedData}}>
-        <Component {...pageProps} SetDialog={SetDialog} />
+        <Component {...pageProps} SetDialog={SetDialog} SaveInLocalStorage={SaveInLocalStorage} />
         <Alert id="Dialog" variant={PickItem(dialog, 0)} className={dialog ? 'is-open' : ''}>
           <CloseButton id="Closer" onClick={() => {SetDialog(null)}} />
           <div>{PickItem(dialog, 1)}</div>

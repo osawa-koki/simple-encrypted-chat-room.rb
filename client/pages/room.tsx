@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Button, Alert, Form, Table } from 'react-bootstrap';
 import Layout from "../components/Layout";
@@ -8,7 +8,7 @@ import { DataContext } from "../src/DataContext";
 import Room from "../src/Room";
 import { AppStruct } from "./_app";
 
-export default function RoomPage({ SetDialog }: AppStruct) {
+export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
 
   const { sharedData, setSharedData } = useContext(DataContext);
 
@@ -24,6 +24,12 @@ export default function RoomPage({ SetDialog }: AppStruct) {
   };
 
   const [loading, setLoading] = useState(false);
+
+  const [saver, setSaver] = useState(0);
+
+  useEffect(() => {
+    SaveInLocalStorage();
+  }, [SaveInLocalStorage, saver]);
 
   return (
     <Layout>
@@ -73,6 +79,7 @@ export default function RoomPage({ SetDialog }: AppStruct) {
                             ...sharedData,
                             current_room: room,
                           });
+                          setSaver(saver + 1);
                         }}>Join</Button>
                       </td>
                     </tr>
@@ -123,7 +130,8 @@ export default function RoomPage({ SetDialog }: AppStruct) {
               }),
             });
             if (res.ok === false) {
-              setError("Failed to create room.");
+              SetDialog(['danger', 'Failed to create room.']);
+              setLoading(false);
               return;
             }
             const room = await res.json() as Room;
@@ -135,6 +143,7 @@ export default function RoomPage({ SetDialog }: AppStruct) {
               ],
             });
             SetDialog(['info', 'Room created successfully.']);
+            setSaver(saver + 1);
             setLoading(false);
           }} disabled={loading || HasErrorAboutRoom() !== null}>Create Room</Button>
         </Form>
