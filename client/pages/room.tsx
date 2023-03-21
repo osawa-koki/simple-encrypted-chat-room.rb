@@ -15,7 +15,7 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
   const [room_name, setRoomName] = useState('');
   const [description, setDescription] = useState('');
   const [password, setPassword] = useState('');
-  const HasErrorAboutRoom: () => string | null = () => {
+  const HasErrorCreating: () => string | null = () => {
     if (room_name === '') return 'Room name is required.';
     if (!room_name.match(/^[a-zA-Z0-9-_]{3,16}$/)) return "Room name must be alphanumeric and contain only '-', '_'.";
     if (description === '') return 'Description is required.';
@@ -111,9 +111,9 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
             <Form.Control type="password" placeholder="Enter password" value={password} onInput={(e) => {setPassword(e.currentTarget.value)}} />
           </Form.Group>
           {
-            HasErrorAboutRoom() !== null ? (
+            HasErrorCreating() !== null ? (
               <Alert variant="danger" className="mt-3">
-                {HasErrorAboutRoom()}
+                {HasErrorCreating()}
               </Alert>
             ) : <></>
           }
@@ -147,7 +147,7 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
             SetDialog(['info', 'Room created successfully.']);
             setSaver(saver + 1);
             setLoading(false);
-          }} disabled={loading || HasErrorAboutRoom() !== null}>Create Room</Button>
+          }} disabled={loading || HasErrorCreating() !== null}>Create Room</Button>
         </Form>
         <hr />
         <h2>Join Room</h2>
