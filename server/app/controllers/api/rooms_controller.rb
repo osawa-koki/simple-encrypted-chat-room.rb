@@ -77,7 +77,7 @@ class Api::RoomsController < ApplicationController
 
     unless @room.room_name == room_name
       unless Room.where(room_name: room_name).empty?
-        render json: { errors: ["Room name already exists."] }, status: :unprocessable_entity
+        render json: { errors: ["Room name already exists."] }, status: :conflict
         return
       end
     end
