@@ -93,6 +93,7 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
                                   ...sharedData,
                                   current_room: room,
                                 })
+                                setSaver(saver + 1);
                               }}>Join</Button>
                             )
                           }
