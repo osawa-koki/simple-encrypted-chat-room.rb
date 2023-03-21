@@ -39,7 +39,7 @@ class Api::RoomsController < ApplicationController
     if room.save
       render json: room, status: :created
     else
-      render json: { error: room.errors.full_messages.join(", ") }, status: :unprocessable_entity
+      render json: { error: room.errors.full_messages.join(", ") }, status: :server_error
     end
   end
 
