@@ -89,8 +89,12 @@ class Api::RoomsController < ApplicationController
     @room = Room.find_by(id: params[:id])
     return render json: { errors: ["Room not found."] }, status: :not_found unless @room
 
-    room_data = JSON.parse(request.body.read)
-    room_password = room_data["password"]
+    begin
+      room_data = JSON.parse(request.body.read)
+      room_password = room_data["password"]
+    rescue JSON::ParserError
+      return render json: { errors: ["Invalid JSON format."] }, status: :unprocessable_entity
+    end
 
     hashed_password = Digest::SHA256.hexdigest("#{Rails.application.config.hash_digest_salt_prefix}#{room_password}#{Rails.application.config.hash_digest_salt_suffix}")
 
