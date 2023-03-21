@@ -46,7 +46,7 @@ class Api::RoomsController < ApplicationController
     end
 
     if Room.exists?(room_name: room_params[:room_name])
-      render json: { error: "Room name is already taken" }, status: :unprocessable_entity
+      render json: { error: "Room name is already taken" }, status: :conflict
       return
     end
 
