@@ -6,6 +6,7 @@ const setting = {
   basePath: Env.basePath,
   apiPath: isProd ? '' : 'http://localhost:8080',
   title: '🎋 simple-encrypted-chat-room.rb 🎋',
+  dialogWaitingTime: 3000,
 };
 
 export default setting;

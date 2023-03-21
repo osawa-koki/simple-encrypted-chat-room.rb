@@ -1,0 +1,29 @@
+
+#Dialog {
+  $height: 100;
+  position: fixed;
+  width: 300px;
+  left: 0;
+  bottom: -#{$height}px;
+  padding: 1rem;
+  margin: 1rem;
+  height: #{$height}px;
+  transition: all 1s ease;
+  z-index: 100;
+  opacity: 0.5;
+  &.is-open {
+    bottom: 0;
+    opacity: 1;
+    #Closer {
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+    }
+  }
+  &:not(.is-open) {
+    #Closer {
+      display: none;
+    }
+  }
+}

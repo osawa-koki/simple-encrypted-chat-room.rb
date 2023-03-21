@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../styles/styles.scss';
 import '../styles/menu.scss';
+import '../styles/dialog.scss';
 
 import '../styles/index.scss';
 import '../styles/about.scss';
@@ -15,8 +16,20 @@ import Head from 'next/head';
 import setting from '../setting';
 import { DataContext } from '../src/DataContext';
 import SharedData from '../src/SharedData';
+import { Alert, CloseButton } from 'react-bootstrap';
+
+type DialogStruct = ['primary' | 'info' | 'warning' | 'danger', string] | null;
+export type { DialogStruct };
+
+function PickItem(array: any[], index: number) {
+  if (array === null) return null;
+  if (array.length <= index) return null;
+  return array[index];
+}
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+
+  const [dialog, setDialog] = useState<DialogStruct>(null);
 
   const [sharedData, setSharedData] = useState<SharedData>({
     username: '',
@@ -25,6 +38,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     key: '',
     message: '',
   });
+
+  const SetDialog = async (dialog: DialogStruct) => {
+    setDialog(dialog);
+    await new Promise((resolve) => setTimeout(resolve, setting.dialogWaitingTime));
+    setDialog(null);
+  };
 
   return (
     <>
@@ -35,7 +54,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link rel="icon" type="image/png" href={`${setting.basePath}/favicon.ico`} />
       </Head>
       <DataContext.Provider value={{sharedData, setSharedData}}>
-        <Component {...pageProps} />
+        <Component {...pageProps} SetDialog={SetDialog} />
+        <Alert id="Dialog" variant={PickItem(dialog, 0)} className={dialog ? 'is-open' : ''}>
+          <CloseButton id="Closer" onClick={() => {SetDialog(null)}} />
+          <div>{PickItem(dialog, 1)}</div>
+        </Alert>
       </DataContext.Provider>
     </>
   );

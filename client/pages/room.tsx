@@ -5,7 +5,7 @@ import Layout from "../components/Layout";
 
 import { DataContext } from "../src/DataContext";
 
-export default function RoomPage() {
+export default function RoomPage({SetDialog}) {
 
   const { sharedData, setSharedData } = useContext(DataContext);
 
@@ -85,7 +85,11 @@ export default function RoomPage() {
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" placeholder="Enter password" />
           </Form.Group>
-          <Button variant="primary" className="mt-3 d-block m-auto">Create Room</Button>
+          <Button variant="primary" className="mt-3 d-block m-auto" onClick={() => {
+            console.log(SetDialog);
+
+            SetDialog(['primary', 'Room created.']);
+          }}>Create Room</Button>
         </Form>
       </div>
     </Layout>
