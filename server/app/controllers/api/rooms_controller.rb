@@ -19,11 +19,18 @@ class Api::RoomsController < ApplicationController
 
   def create
     # POST /rooms
-    room_params = JSON.parse(request.body.read).symbolize_keys
+    begin
+      room_params = JSON.parse(request.body.read).symbolize_keys
+    rescue JSON::ParserError
+      return render json: { error: "Invalid JSON format" }, status: :unprocessable_entity
+    end
+
+    room_password = Digest::SHA256.hexdigest("#{Rails.application.config.hash_digest_salt_prefix}#{room_params[:password]}#{Rails.application.config.hash_digest_salt_suffix}")
+
     room = Room.new(
       room_name: room_params[:room_name],
       description: room_params[:description],
-      password: Digest::SHA256.hexdigest("#{Rails.application.config.hash_digest_salt_prefix}#{room_params[:password]}#{Rails.application.config.hash_digest_salt_suffix}")
+      password: room_password
     )
 
     unless room.valid?
@@ -51,10 +58,14 @@ class Api::RoomsController < ApplicationController
     # PATCH /rooms/:id
     @room = Room.find(params[:id])
 
-    room_data = JSON.parse(request.body.read)
-    room_name = room_data["room_name"]
-    room_description = room_data["description"]
-    room_password = room_data["password"]
+    begin
+      room_data = JSON.parse(request.body.read)
+      room_name = room_data["room_name"]
+      room_description = room_data["description"]
+      room_password = room_data["password"]
+    rescue JSON::ParserError
+      return render json: { errors: ["Invalid JSON format."] }, status: :unprocessable_entity
+    end
 
     unless @room.room_name == room_name
       unless Room.where(room_name: room_name).empty?
