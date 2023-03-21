@@ -40,13 +40,13 @@ class Api::RoomsController < ApplicationController
       password: room_password
     )
 
-    unless room.valid?
-      render json: { error: room.errors.full_messages.join(", ") }, status: :unprocessable_entity
-      return
-    end
-
     if Room.exists?(room_name: room_params[:room_name])
       render json: { error: "Room name is already taken" }, status: :conflict
+      return
+    end
+    
+    unless room.valid?
+      render json: { error: room.errors.full_messages.join(", ") }, status: :unprocessable_entity
       return
     end
 
