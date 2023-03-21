@@ -14,7 +14,28 @@ class Api::RoomsController < ApplicationController
   end
 
   def new
-    # GET /rooms/new
+    room_params = JSON.parse(request.body.read).symbolize_keys
+    room = Room.new(
+      name: room_params[:room_name],
+      description: room_params[:description],
+      password: Digest::SHA256.hexdigest("#{Rails.application.config.hash_digest_salt_prefix}#{room_params[:password]}#{Rails.application.config.hash_digest_salt_suffix}")
+    )
+
+    unless room.valid?
+      render json: { error: room.errors.full_messages.join(", ") }, status: :unprocessable_entity
+      return
+    end
+
+    if Room.exists?(name: room_params[:room_name])
+      render json: { error: "Room name is already taken" }, status: :unprocessable_entity
+      return
+    end
+
+    if room.save
+      render json: room, status: :created
+    else
+      render json: { error: room.errors.full_messages.join(", ") }, status: :unprocessable_entity
+    end
   end
 
   def create

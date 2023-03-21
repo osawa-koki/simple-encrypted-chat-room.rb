@@ -23,5 +23,8 @@ module Server
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    config.hash_digest_salt_prefix = "happy-new-year-"
+    config.hash_digest_salt_suffix = "-2023"
   end
 end
