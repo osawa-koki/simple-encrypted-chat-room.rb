@@ -8,6 +8,8 @@ import { DataContext } from "../src/DataContext";
 import Room from "../src/Room";
 import { AppStruct } from "./_app";
 
+const room_name_regex = /^[a-zA-Z0-9-_]{3,16}$/;
+
 export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
 
   const { sharedData, setSharedData } = useContext(DataContext);
@@ -17,13 +19,18 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
   const [password, setPassword] = useState('');
   const HasErrorCreating: () => string | null = () => {
     if (room_name === '') return 'Room name is required.';
-    if (!room_name.match(/^[a-zA-Z0-9-_]{3,16}$/)) return "Room name must be alphanumeric and contain only '-', '_'.";
+    if (!room_name.match(room_name_regex)) return "Room name must be alphanumeric and contain only '-', '_'.";
     if (description === '') return 'Description is required.';
     if (password === '') return 'Password is required.';
     return null;
   };
 
   const [join_room_name, setJoinRoomName] = useState('');
+  const HasErrorJoining: () => string | null = () => {
+    if (join_room_name === '') return 'Room name is required.';
+    if (!join_room_name.match(room_name_regex)) return "Room name must be alphanumeric and contain only '-', '_'.";
+    return null;
+  };
 
   const [loading, setLoading] = useState(false);
 
@@ -156,6 +163,37 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
             <Form.Label>Room Name</Form.Label>
             <Form.Control type="text" placeholder="Enter room name" value={join_room_name} onInput={(e) => {setJoinRoomName(e.currentTarget.value)}} />
           </Form.Group>
+          {
+            HasErrorJoining() !== null ? (
+              <Alert variant="danger" className="mt-3">
+                {HasErrorJoining()}
+              </Alert>
+            ) : <></>
+          }
+          <Button variant="primary" className="mt-3 d-block m-auto" onClick={async () => {
+            setLoading(true);
+            await new Promise((resolve) => setTimeout(resolve, setting.smallWaitingTime));
+            const res = await fetch(`${setting.apiPath}/api/rooms/${join_room_name}`, {
+              method: 'GET',
+            });
+            if (res.ok === false) {
+              SetDialog(['danger', 'Failed to join room.']);
+              setLoading(false);
+              return;
+            }
+            const room = await res.json() as Room;
+            setSharedData({
+              ...sharedData,
+              current_room: room,
+              rooms: [
+                ...sharedData.rooms,
+                room,
+              ],
+            });
+            SetDialog(['info', 'Room joined successfully.']);
+            setSaver(saver + 1);
+            setLoading(false);
+          }} disabled={loading || HasErrorJoining() !== null}>Join Room</Button>
         </Form>
       </div>
     </Layout>

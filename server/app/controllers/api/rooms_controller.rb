@@ -10,7 +10,14 @@ class Api::RoomsController < ApplicationController
   end
 
   def show
-    # GET /rooms/:id
+    @room = Room.find_by(room_name: params[:id])
+
+    unless @room
+      render json: { errors: ["Room not found."] }, status: :not_found
+      return
+    end
+
+    render json: @room, status: :ok
   end
 
   def new
