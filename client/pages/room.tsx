@@ -70,6 +70,23 @@ export default function RoomPage() {
             </Alert>
           )
         }
+        <hr />
+        <h2>Create Room</h2>
+        <Form className="mt-3">
+          <Form.Group className="mt-3">
+            <Form.Label>Room Name</Form.Label>
+            <Form.Control type="text" placeholder="Enter room name" />
+          </Form.Group>
+          <Form.Group className="mt-3">
+            <Form.Label>Description</Form.Label>
+            <Form.Control type="text" placeholder="Enter description" />
+          </Form.Group>
+          <Form.Group className="mt-3">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="Enter password" />
+          </Form.Group>
+          <Button variant="primary" className="mt-3 d-block m-auto">Create Room</Button>
+        </Form>
       </div>
     </Layout>
   );
