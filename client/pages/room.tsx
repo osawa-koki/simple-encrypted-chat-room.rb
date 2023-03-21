@@ -23,6 +23,8 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
     return null;
   };
 
+  const [join_room_name, setJoinRoomName] = useState('');
+
   const [loading, setLoading] = useState(false);
 
   const [saver, setSaver] = useState(0);
@@ -146,6 +148,14 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
             setSaver(saver + 1);
             setLoading(false);
           }} disabled={loading || HasErrorAboutRoom() !== null}>Create Room</Button>
+        </Form>
+        <hr />
+        <h2>Join Room</h2>
+        <Form className="mt-3">
+          <Form.Group className="mt-3">
+            <Form.Label>Room Name</Form.Label>
+            <Form.Control type="text" placeholder="Enter room name" value={join_room_name} onInput={(e) => {setJoinRoomName(e.currentTarget.value)}} />
+          </Form.Group>
         </Form>
       </div>
     </Layout>
