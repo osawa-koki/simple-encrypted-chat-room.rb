@@ -37,6 +37,7 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
   const [saver, setSaver] = useState(0);
 
   useEffect(() => {
+    if (saver === 0) return;
     SaveInLocalStorage();
   }, [SaveInLocalStorage, saver]);
 

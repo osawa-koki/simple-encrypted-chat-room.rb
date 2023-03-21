@@ -52,6 +52,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   };
 
   const SaveInLocalStorage = () => {
+    console.log('Saving data to local storage...');
     localStorage.setItem('username', sharedData.username);
     localStorage.setItem('current_room', JSON.stringify(sharedData.current_room));
     localStorage.setItem('rooms', JSON.stringify(sharedData.rooms));
@@ -60,6 +61,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   };
 
   useEffect(() => {
+    console.log('Retrieving data from local storage...');
     const username = localStorage.getItem('username');
     const current_room = localStorage.getItem('current_room');
     const rooms = localStorage.getItem('rooms');
