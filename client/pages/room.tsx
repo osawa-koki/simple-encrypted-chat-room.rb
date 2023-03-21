@@ -87,8 +87,6 @@ export default function RoomPage({ SetDialog }: AppStruct) {
             <Form.Control type="password" placeholder="Enter password" />
           </Form.Group>
           <Button variant="primary" className="mt-3 d-block m-auto" onClick={() => {
-            console.log(SetDialog);
-
             SetDialog(['primary', 'Room created.']);
           }}>Create Room</Button>
         </Form>
