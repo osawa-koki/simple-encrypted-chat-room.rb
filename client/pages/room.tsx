@@ -50,11 +50,11 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
         {
           sharedData.current_room ? (
             <Form className="mt-3">
-              <Form.Group>
+              <Form.Group className="mt-3">
                 <Form.Label>Room Name</Form.Label>
                 <Form.Control type="text" value={sharedData.current_room.room_name} disabled />
               </Form.Group>
-              <Form.Group>
+              <Form.Group className="mt-3">
                 <Form.Label>Description</Form.Label>
                 <Form.Control type="text" value={sharedData.current_room.description} disabled />
               </Form.Group>
