@@ -144,8 +144,13 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
                 password: password,
               }),
             });
+            if (res.status === 409) {
+              SetDialog(['danger', 'Room name is already taken.']);
+              setLoading(false);
+              return;
+            }
             if (res.ok === false) {
-              SetDialog(['danger', 'Failed to create room.']);
+              SetDialog(['danger', 'Failed to create room. (unknown error)']);
               setLoading(false);
               return;
             }
