@@ -3,7 +3,7 @@ import { Form, Table, Button, CloseButton } from "react-bootstrap";
 import setting from "../setting";
 import Room from "../src/Room";
 
-export default function RoomEditor({ room, closer }: { room: Room, closer: () => void }) {
+export default function RoomEditor({ room, closer, SetDialog }: { room: Room, closer: () => void, SetDialog: any }) {
 
   const [room_name, setRoomName] = React.useState(room.room_name);
   const [description, setDescription] = React.useState(room.description);
@@ -11,30 +11,31 @@ export default function RoomEditor({ room, closer }: { room: Room, closer: () =>
   const [confirm_password, setConfirmPassword] = React.useState('');
 
   const Update = async () => {
-    const res = await fetch(`${setting.apiPath}/api/room/${room.id}`, {
+    const new_data = {};
+    if (room_name !== room.room_name) new_data['room_name'] = room_name;
+    if (description !== room.description) new_data['description'] = description;
+    if (new_password !== '') new_data['new_password'] = new_password;
+    if (confirm_password !== '') new_data['confirm_password'] = confirm_password;
+    const res = await fetch(`${setting.apiPath}/api/rooms/${room.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        room_name: room_name,
-        description: description,
-        new_password: new_password,
-        confirm_password: confirm_password,
-      }),
+      body: JSON.stringify(new_data),
     });
     if (res.status === 409) {
-      alert('Room name is already taken.');
+      SetDialog(['danger', 'Room name is already taken.']);
       return;
     }
-    if (res.status === 401) {
-      alert('Invalid password.');
+    if (res.status === 403) {
+      SetDialog(['danger', 'Password is incorrect.']);
       return;
     }
     if (res.ok === false) {
-      alert('Failed to update room. (unknown error)');
+      SetDialog(['danger', 'Failed to update room. (unknown error)']);
       return;
     }
+    SetDialog(['success', 'Room updated!']);
   };
 
   return (

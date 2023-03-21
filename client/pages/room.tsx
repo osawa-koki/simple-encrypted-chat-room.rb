@@ -228,7 +228,7 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
         </Form>
       </div>
       {
-        showEditor && <RoomEditor room={editingRoom} closer={() => {setShowEditor(false)}} />
+        showEditor && <RoomEditor room={editingRoom} closer={() => {setShowEditor(false)}} SetDialog={SetDialog} />
       }
     </Layout>
   );
