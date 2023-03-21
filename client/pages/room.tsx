@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 import { Button, Alert, Form, Table } from 'react-bootstrap';
 import Layout from "../components/Layout";
+import RoomEditor from "../components/RoomEditor";
 import setting from "../setting";
 
 import { DataContext } from "../src/DataContext";
@@ -31,6 +32,9 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
     if (!join_room_name.match(room_name_regex)) return "Room name must be alphanumeric and contain only '-', '_'.";
     return null;
   };
+
+  const [editingRoom, setEditingRoom] = useState<Room | null>(null);
+  const [showEditor, setShowEditor] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -81,7 +85,12 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
                 {
                   sharedData.rooms.map((room, index) => (
                     <tr key={index}>
-                      <td>{room.room_name}</td>
+                      <td>
+                        <span role="button" className="text-primary underline" onClick={() => {
+                          setEditingRoom(room);
+                          setShowEditor(true);
+                        }}>{room.room_name}</span>
+                      </td>
                       <td>{room.description}</td>
                       <td>
                           {
@@ -213,6 +222,9 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
           }} disabled={loading || HasErrorJoining() !== null}>Join Room</Button>
         </Form>
       </div>
+      {
+        showEditor && <RoomEditor room={editingRoom} closer={() => {setShowEditor(false)}} />
+      }
     </Layout>
   );
 };

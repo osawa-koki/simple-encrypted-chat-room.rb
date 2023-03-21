@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/styles.scss';
 import '../styles/menu.scss';
 import '../styles/dialog.scss';
+import '../styles/room_editor.scss';
 
 import '../styles/index.scss';
 import '../styles/about.scss';

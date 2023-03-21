@@ -9,7 +9,7 @@
   margin: 1rem;
   height: #{$height}px;
   transition: all 1s ease;
-  z-index: 100;
+  z-index: 3000;
   opacity: 0.5;
   &.is-open {
     bottom: 0;

@@ -1,0 +1,25 @@
+
+#RoomEditor {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95%;
+  height: 80%;
+  max-width: 1000px;
+  max-height: 600px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 101;
+  padding: 1rem;
+  #Closer {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
