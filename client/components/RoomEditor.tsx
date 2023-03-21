@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, Table, Button, CloseButton } from "react-bootstrap";
+import setting from "../setting";
 import Room from "../src/Room";
 
 export default function RoomEditor({ room, closer }: { room: Room, closer: () => void }) {
@@ -8,6 +9,33 @@ export default function RoomEditor({ room, closer }: { room: Room, closer: () =>
   const [description, setDescription] = React.useState(room.description);
   const [new_password, setNewPassword] = React.useState('');
   const [confirm_password, setConfirmPassword] = React.useState('');
+
+  const Update = async () => {
+    const res = await fetch(`${setting.apiPath}/api/room/${room.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        room_name: room_name,
+        description: description,
+        new_password: new_password,
+        confirm_password: confirm_password,
+      }),
+    });
+    if (res.status === 409) {
+      alert('Room name is already taken.');
+      return;
+    }
+    if (res.status === 401) {
+      alert('Invalid password.');
+      return;
+    }
+    if (res.ok === false) {
+      alert('Failed to update room. (unknown error)');
+      return;
+    }
+  };
 
   return (
     <div id="RoomEditor">
@@ -46,7 +74,7 @@ export default function RoomEditor({ room, closer }: { room: Room, closer: () =>
           </tr>
         </tbody>
       </Table>
-      <Button variant="primary" size="sm" >Update!</Button>
+      <Button variant="primary" size="sm" onClick={Update}>Update!</Button>
       <CloseButton id="Closer" onClick={() => {closer()}} />
     </div>
   );
