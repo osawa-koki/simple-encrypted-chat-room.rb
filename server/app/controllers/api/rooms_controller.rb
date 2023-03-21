@@ -44,7 +44,7 @@ class Api::RoomsController < ApplicationController
       render json: { error: "Room name is already taken" }, status: :conflict
       return
     end
-    
+
     unless room.valid?
       render json: { error: room.errors.full_messages.join(", ") }, status: :unprocessable_entity
       return
@@ -69,7 +69,8 @@ class Api::RoomsController < ApplicationController
       room_data = JSON.parse(request.body.read)
       room_name = room_data["room_name"]
       room_description = room_data["description"]
-      room_password = room_data["password"]
+      room_new_password = room_data["new_password"]
+      room_confirm_password = room_data["confirm_password"]
     rescue JSON::ParserError
       return render json: { errors: ["Invalid JSON format."] }, status: :unprocessable_entity
     end
@@ -84,7 +85,7 @@ class Api::RoomsController < ApplicationController
     attributes = {}
     attributes[:room_name] = room_name if room_name.present?
     attributes[:description] = room_description if room_description.present?
-    attributes[:password] = room_password if room_password.present?
+    attributes[:password] = room_new_password if room_new_password.present?
 
     @room.assign_attributes(attributes)
 
@@ -94,7 +95,7 @@ class Api::RoomsController < ApplicationController
     end
 
     saved_password = Room.find(@room.id).password
-    input_password = Digest::SHA256.hexdigest("#{Rails.application.config.hash_digest_salt_prefix}#{room_password}#{Rails.application.config.hash_digest_salt_suffix}")
+    input_password = Digest::SHA256.hexdigest("#{Rails.application.config.hash_digest_salt_prefix}#{room_confirm_password}#{Rails.application.config.hash_digest_salt_suffix}")
 
     unless saved_password == input_password
       render json: { errors: ["Invalid password."] }, status: :forbidden
