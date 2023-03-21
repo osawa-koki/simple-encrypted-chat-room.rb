@@ -83,13 +83,18 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
                       <td>{room.room_name}</td>
                       <td>{room.description}</td>
                       <td>
-                        <Button variant="primary" onClick={() => {
-                          setSharedData({
-                            ...sharedData,
-                            current_room: room,
-                          });
-                          setSaver(saver + 1);
-                        }}>Join</Button>
+                          {
+                            (sharedData.current_room !== null && sharedData.current_room.id === room.id) ? (
+                              <div>🌠 Current 🌠</div>
+                            ) : (
+                              <Button variant="info" size="sm" onClick={() => {
+                                setSharedData({
+                                  ...sharedData,
+                                  current_room: room,
+                                })
+                              }}>Join</Button>
+                            )
+                          }
                       </td>
                     </tr>
                   ))
