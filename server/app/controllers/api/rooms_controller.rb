@@ -86,5 +86,18 @@ class Api::RoomsController < ApplicationController
 
   def destroy
     # DELETE /rooms/:id
+    @room = Room.find_by(id: params[:id])
+    return render json: { errors: ["Room not found."] }, status: :not_found unless @room
+
+    room_data = JSON.parse(request.body.read)
+    room_password = room_data["password"]
+
+    hashed_password = Digest::SHA256.hexdigest("#{Rails.application.config.hash_digest_salt_prefix}#{room_password}#{Rails.application.config.hash_digest_salt_suffix}")
+
+    return render json: { errors: ["Invalid password."] }, status: :forbidden unless @room.password == hashed_password
+
+    @room.destroy
+    head :no_content
   end
+
 end
