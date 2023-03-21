@@ -5,7 +5,7 @@ const setting = {
   isProd,
   basePath: Env.basePath,
   apiPath: isProd ? '' : 'http://localhost:8080',
-  title: '🐸 Next.js Template 🐸',
+  title: '🎋 simple-encrypted-chat-room.rb 🎋',
 };
 
 export default setting;
