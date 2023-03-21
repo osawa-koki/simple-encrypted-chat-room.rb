@@ -187,6 +187,11 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
             const res = await fetch(`${setting.apiPath}/api/rooms/${join_room_name}`, {
               method: 'GET',
             });
+            if (res.status === 404) {
+              SetDialog(['danger', 'Room not found.']);
+              setLoading(false);
+              return;
+            }
             if (res.ok === false) {
               SetDialog(['danger', 'Failed to join room.']);
               setLoading(false);
