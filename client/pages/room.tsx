@@ -35,6 +35,20 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
 
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
   const [showEditor, setShowEditor] = useState(false);
+  const RoomUpdated = (id: number, room: Room) => {
+    const new_data = {
+      ...sharedData,
+      rooms: sharedData.rooms.map((_room) => {
+        if (_room.id === id) return room;
+        return _room;
+      }),
+    };
+    if (sharedData.current_room && sharedData.current_room.id === id) {
+      new_data.current_room = room;
+    }
+    setSharedData(new_data);
+    setSaver(saver + 1);
+  };
 
   const [loading, setLoading] = useState(false);
 
@@ -228,7 +242,7 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
         </Form>
       </div>
       {
-        showEditor && <RoomEditor room={editingRoom} closer={() => {setShowEditor(false)}} SetDialog={SetDialog} />
+        showEditor && <RoomEditor room={editingRoom} closer={() => {setShowEditor(false)}} SetDialog={SetDialog} RoomUpdated={RoomUpdated} />
       }
     </Layout>
   );
