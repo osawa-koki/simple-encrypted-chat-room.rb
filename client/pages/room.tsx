@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import { Button, Alert, Form } from 'react-bootstrap';
+import { Button, Alert, Form, Table } from 'react-bootstrap';
 import Layout from "../components/Layout";
 
 import { DataContext } from "../src/DataContext";
@@ -30,6 +30,43 @@ export default function RoomPage() {
           ) : (
             <Alert variant="warning" className="mt-3">
               You are not in any room.
+            </Alert>
+          )
+        }
+        <hr />
+        <h2>Room List</h2>
+        {
+          sharedData.rooms.length > 0 ? (
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Room Name</th>
+                  <th>Description</th>
+                  <th>Join</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  sharedData.rooms.map((room, index) => (
+                    <tr key={index}>
+                      <td>{room.room_name}</td>
+                      <td>{room.description}</td>
+                      <td>
+                        <Button variant="primary" onClick={() => {
+                          setSharedData({
+                            ...sharedData,
+                            current_room: room,
+                          });
+                        }}>Join</Button>
+                      </td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </Table>
+          ) : (
+            <Alert variant="warning" className="mt-3">
+              There is no room.
             </Alert>
           )
         }
