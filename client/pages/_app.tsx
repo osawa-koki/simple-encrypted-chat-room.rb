@@ -41,7 +41,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     username: '',
     current_room: null,
     rooms: [],
-    key: '',
     message: '',
   });
 
@@ -56,7 +55,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     localStorage.setItem('username', sharedData.username);
     localStorage.setItem('current_room', JSON.stringify(sharedData.current_room));
     localStorage.setItem('rooms', JSON.stringify(sharedData.rooms));
-    localStorage.setItem('key', sharedData.key);
     localStorage.setItem('message', sharedData.message);
   };
 
