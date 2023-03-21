@@ -14,6 +14,7 @@ class Api::RoomsController < ApplicationController
   end
 
   def new
+    # GET /rooms/new
   end
 
   def create
