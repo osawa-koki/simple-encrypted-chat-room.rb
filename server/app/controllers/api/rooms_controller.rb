@@ -86,7 +86,15 @@ class Api::RoomsController < ApplicationController
       return
     end
 
-    @room.password = Digest::SHA256.hexdigest("#{Rails.application.config.hash_digest_salt_prefix}#{room_password}#{Rails.application.config.hash_digest_salt_suffix}") if @room.password.present?
+    saved_password = Room.find(@room.id).password
+    input_password = Digest::SHA256.hexdigest("#{Rails.application.config.hash_digest_salt_prefix}#{room_password}#{Rails.application.config.hash_digest_salt_suffix}")
+
+    unless saved_password == input_password
+      render json: { errors: ["Invalid password."] }, status: :forbidden
+      return
+    end
+
+    @room.password = input_password if @room.password.present?
 
     if @room.save
       render json: @room, status: :ok
