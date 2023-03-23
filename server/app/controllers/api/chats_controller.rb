@@ -15,4 +15,30 @@ class Api::ChatsController < ApplicationController
     @chats = @chats.limit(per_page)
     render json: @chats
   end
+
+  def create
+    # POST /api/chats
+    begin
+      chat_params = JSON.parse(request.body.read).symbolize_keys
+    rescue JSON::ParserError
+      return render json: { error: "Invalid JSON format" }, status: :unprocessable_entity
+    end
+
+    chat = Chat.new(
+      room_id_id: chat_params[:room_id],
+      username: chat_params[:username],
+      message: chat_params[:message]
+    )
+
+    unless chat.valid?
+      render json: { error: chat.errors.full_messages.join(", ") }, status: :unprocessable_entity
+      return
+    end
+
+    if chat.save
+      render json: chat, status: :created
+    else
+      render json: { error: chat.errors.full_messages.join(", ") }, status: :server_error
+    end
+  end
 end
