@@ -17,6 +17,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_23_131336) do
     t.string "message", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_chats_on_room_id"
   end
 
   create_table "rooms", force: :cascade do |t|
@@ -28,5 +29,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_23_131336) do
     t.index ["room_name"], name: "index_rooms_on_room_name", unique: true
   end
 
-  add_foreign_key "chats", "rooms", column: "id"
+  add_foreign_key "chats", "rooms"
 end
