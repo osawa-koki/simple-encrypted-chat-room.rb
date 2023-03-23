@@ -35,10 +35,14 @@ class Api::ChatsController < ApplicationController
       return
     end
 
-    if chat.save
-      render json: chat, status: :created
-    else
-      render json: { error: chat.errors.full_messages.join(", ") }, status: :server_error
+    begin
+      if chat.save
+        render json: chat, status: :created
+      else
+        render json: { error: chat.errors.full_messages.join(", ") }, status: :server_error
+      end
+    rescue ActiveRecord::InvalidForeignKey => e
+      render json: { error: "Room does not exist.", detail: e }, status: :not_found
     end
   end
 end
