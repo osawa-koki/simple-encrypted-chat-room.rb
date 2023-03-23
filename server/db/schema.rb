@@ -20,9 +20,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_23_131336) do
   end
 
   create_table "rooms", force: :cascade do |t|
-    t.string "room_name"
-    t.string "description"
-    t.string "password"
+    t.string "room_name", null: false
+    t.string "description", null: false
+    t.string "password", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["room_name"], name: "index_rooms_on_room_name", unique: true
