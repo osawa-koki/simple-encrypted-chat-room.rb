@@ -12,12 +12,11 @@
 
 ActiveRecord::Schema[7.0].define(version: 2023_03_23_131336) do
   create_table "chats", force: :cascade do |t|
-    t.integer "room_id_id", null: false
+    t.integer "room_id", null: false
     t.string "username", null: false
     t.string "message", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["room_id_id"], name: "index_chats_on_room_id_id"
   end
 
   create_table "rooms", force: :cascade do |t|

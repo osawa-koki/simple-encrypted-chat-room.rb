@@ -11,7 +11,7 @@ class Api::ChatsController < ApplicationController
     end
 
     @chats = Chat.all
-    @chats = @chats.where("room_id = ? AND created_at > ?", room_id.to_i, Time.at(since.to_i))
+    @chats = @chats.where("room_id = ? AND created_at < ?", room_id.to_i, Time.at(since.to_i))
     @chats = @chats.limit(per_page)
     render json: @chats
   end
@@ -25,7 +25,7 @@ class Api::ChatsController < ApplicationController
     end
 
     chat = Chat.new(
-      room_id_id: chat_params[:room_id],
+      room_id: chat_params[:room_id],
       username: chat_params[:username],
       message: chat_params[:message]
     )
