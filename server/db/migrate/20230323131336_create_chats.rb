@@ -7,6 +7,6 @@ class CreateChats < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
-    add_foreign_key :chats, :rooms, column: :id
+    add_foreign_key :chats, :rooms, column: :room_id
   end
 end
