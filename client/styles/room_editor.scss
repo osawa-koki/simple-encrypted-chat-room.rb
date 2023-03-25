@@ -1,3 +1,4 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
 
 #RoomEditor {
   position: fixed;
@@ -16,6 +17,9 @@
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   z-index: 101;
+  @include media-breakpoint-up(md) {
+    z-index: 1100;
+  }
   padding: 1rem;
   #Closer {
     position: absolute;
