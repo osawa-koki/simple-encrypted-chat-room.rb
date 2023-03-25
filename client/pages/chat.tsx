@@ -6,6 +6,7 @@ import setting from "../setting";
 
 import { DataContext } from "../src/DataContext";
 import Message from "../src/Message";
+import { decrypt, encrypt } from "../src/RC4";
 
 export default function ChatPage() {
 
@@ -99,7 +100,7 @@ export default function ChatPage() {
         data: JSON.stringify({
           message: {
             username: sharedData.username,
-            message: message,
+            message: encrypt(message, key),
           },
         }),
       }));
@@ -160,7 +161,7 @@ export default function ChatPage() {
               messages.map((message, index) => (
                 <tr key={index}>
                   <td>{message.username}</td>
-                  <td>{message.message}</td>
+                  <td>{decrypt(message.message, key)}</td>
                 </tr>
               ))
             }
