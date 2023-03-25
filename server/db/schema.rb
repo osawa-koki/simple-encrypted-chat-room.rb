@@ -17,6 +17,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_23_131336) do
     t.string "message", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_chats_on_created_at"
     t.index ["room_id"], name: "index_chats_on_room_id"
   end
 
