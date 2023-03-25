@@ -1,5 +1,7 @@
 # simple-encrypted-chat-room.rb
 
+🍉🍉🍉 暗号化してチャットできるアプリです。  
+
 ## 実行方法
 
 ```shell
