@@ -28,6 +28,37 @@ export type AppStruct = {
   SaveInLocalStorage: () => void;
 };
 
+const name_prefixes = [
+  'Wonderful',
+  'Amazing',
+  'Fantastic',
+  'Great',
+  'Cool',
+  'Awesome',
+  'Super',
+  'Nice',
+  'Good',
+  'Beautiful',
+  'Cute',
+  'Pretty',
+  'Smart',
+];
+const name_bodies = [
+  'Tako',
+  'Penguin',
+  'Panda',
+  'Cat',
+  'Dog',
+  'Rabbit',
+  'Mouse',
+  'Bird',
+  'Fish',
+  'Lion',
+  'Tiger',
+  'Bear',
+];
+const name = `${name_prefixes[Math.floor(Math.random() * name_prefixes.length)]} ${name_bodies[Math.floor(Math.random() * name_bodies.length)]}`;
+
 function PickItem(array: any[], index: number) {
   if (array === null) return null;
   if (array.length <= index) return null;
@@ -39,7 +70,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const [dialog, setDialog] = useState<DialogStruct>(null);
 
   const [sharedData, setSharedData] = useState<SharedData>({
-    username: '',
+    username: name,
     current_room: null,
     rooms: [],
     message: '',

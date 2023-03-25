@@ -8,12 +8,52 @@ import { DataContext } from "../src/DataContext";
 import Message from "../src/Message";
 import { decrypt, encrypt } from "../src/RC4";
 
+const keys = [
+  'Ruby',
+  'TypeScript',
+  'JavaScript',
+  'Python',
+  'C++',
+  'C#',
+  'Java',
+  'Go',
+  'Rust',
+  'Kotlin',
+  'Swift',
+  'PHP',
+  'C',
+  'Objective-C',
+  'Perl',
+  'Scala',
+  'Haskell',
+  'Clojure',
+  'Elixir',
+  'Erlang',
+  'F#',
+  'Dart',
+  'Lua',
+  'Groovy',
+  'R',
+  'Julia',
+  'Matlab',
+  'Visual Basic',
+  'Delphi',
+  'COBOL',
+  'Ada',
+  'Fortran',
+  'Lisp',
+  'Prolog',
+  'Scheme',
+  'Smalltalk',
+  'Pascal',
+];
+
 export default function ChatPage() {
 
   const { sharedData, setSharedData } = React.useContext(DataContext);
 
   const [message, setMessage] = useState<string>('Hello World!!!');
-  const [key, setKey] = useState<string>('');
+  const [key, setKey] = useState<string>(keys[Math.floor(Math.random() * keys.length)]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [socket, setSocket] = useState<WebSocket>();
   const [ready, setReady] = useState<boolean>(false);
