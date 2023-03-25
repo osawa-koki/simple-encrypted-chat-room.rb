@@ -241,6 +241,16 @@ export default function RoomPage({ SetDialog, SaveInLocalStorage }: AppStruct) {
           }} disabled={loading || HasErrorJoining() !== null || sharedData.rooms.find(a => a.room_name === join_room_name) !== undefined}>Join Room</Button>
         </Form>
       </div>
+      <hr />
+      <Button variant="outline-danger" className="mt-3 d-block m-auto w-100" size="sm" onClick={async () => {
+        if (window.confirm('Are you sure to reset?') === false) return;
+        setSharedData({
+          ...sharedData,
+          current_room: null,
+          rooms: [],
+        });
+        setSaver(saver + 1);
+      }}>Reset</Button>
       {
         showEditor && <RoomEditor room={editingRoom} closer={() => {setShowEditor(false)}} SetDialog={SetDialog} RoomUpdated={RoomUpdated} />
       }
