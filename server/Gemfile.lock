@@ -161,6 +161,7 @@ PLATFORMS
   x64-mingw-ucrt
 
 DEPENDENCIES
+  actioncable (~> 7.0)
   bootsnap
   debug
   puma (~> 5.0)
