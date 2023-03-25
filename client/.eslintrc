@@ -10,7 +10,8 @@
     "window": "readonly",
     "describe": "readonly",
     "test": "readonly",
-    "expect": "readonly"
+    "expect": "readonly",
+    "it": "readonly"
   },
   "plugins": [
     "react-hooks",
