@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   namespace :api do
     resources :rooms
     resources :chats
+
+    delete '/admin', to: 'admin#destroy'
   end
   mount ActionCable.server => '/cable'
 end
