@@ -87,8 +87,13 @@ export default function ChatPage() {
         command: 'subscribe',
         identifier: JSON.stringify({ channel: 'ChatChannel', room: room_id }),
       }));
+      setSocket(socket);
+      (async () => {
+        const res = await fetch(`${setting.apiPath}/api/chats?room_id=${room_id}`);
+        const messages = await res.json() as Message[];
+        setMessages(messages);
+      })();
     };
-    setSocket(socket);
   }, [sharedData.current_room]);
 
   useEffect(() => {

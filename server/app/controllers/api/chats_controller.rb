@@ -12,6 +12,7 @@ class Api::ChatsController < ApplicationController
 
     @chats = Chat.all
     @chats = @chats.where("room_id = ? AND created_at < ?", room_id.to_i, Time.at(since.to_i))
+    @chats = @chats.order(created_at: :desc)
     @chats = @chats.limit(per_page)
     render json: @chats
   end
