@@ -62,4 +62,4 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
     - name: Build Docker image
-      run: docker build -t "${{ env.GITHUB_REPOSITORY }}" .
+      run: docker build -t ${{ env.REPOSITORY_NAME }} .
