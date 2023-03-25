@@ -5,7 +5,7 @@ const setting = {
   isProd,
   basePath: Env.basePath,
   apiPath: isProd ? '' : 'http://localhost:8000',
-  wsPath: isProd ? '' : 'ws://localhost:8000',
+  wsPath: isProd ? null : 'ws://localhost:8000',
   title: '🎋 simple-encrypted-chat-room.rb 🎋',
   dialogWaitingTime: 3000,
   smallWaitingTime: 10,
